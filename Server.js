@@ -27,8 +27,8 @@ app.post("/latest", async (request, response) => {
 });
 
 //get data for specific coin
-app.get("/latest/:coinSlug", async (request, response) => {
-    const slug = request.params.coinSlug;
+app.get("/latest/:coinName", async (request, response) => {
+    const coinName = request.params.coinName;
 
     const res = await fetch(`${cmcHost}/v1/cryptocurrency/listings/latest?cryptocurrency_type=coins`, {
         "method": "GET",
@@ -38,7 +38,7 @@ app.get("/latest/:coinSlug", async (request, response) => {
     });
     const mainJson = await res.json();
 
-    const coinLogoRes = await fetch(`${cmcHost}/v1/cryptocurrency/info?slug=${slug}`, {
+    const coinLogoRes = await fetch(`${cmcHost}/v1/cryptocurrency/info?slug=${coinName}`, {
         "method": "GET",
         "headers": {
             "X-CMC_PRO_API_KEY": apiKey
@@ -46,7 +46,7 @@ app.get("/latest/:coinSlug", async (request, response) => {
     });
     console
     const logoJson = await coinLogoRes.json();
-    const coinData = mainJson.data.filter(coinData => coinData.slug === slug);
+    const coinData = mainJson.data.filter(coinData => coinData.slug === coinName);
     response.send({coinData, logoJson});
 
 
