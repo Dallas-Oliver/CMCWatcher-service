@@ -5,9 +5,16 @@ require('dotenv').config();
 const port = process.env.PORT || 3000;
 const apiKey = process.env.API_KEY;
 const cmcHost = "https://pro-api.coinmarketcap.com"
+const nasaHost = "https://api.nasa.gov/"
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.get("/potd", async (req, res) => {
+    const response = await fetch(`${nasaHost}planetary/apod?api_key=${process.env.NASA_API_KEY}`);
+    const json = await response.json();
+    res.send(json);
+})
 
 
 //get 10 coins data sorted by price in ascending order
